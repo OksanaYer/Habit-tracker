@@ -62,7 +62,7 @@ useEffect(() => {
           <HabitList habits={habits} onToggleDot={handleToggleDot} />
         </div>
         <div>
-          <Progress />
+          <Progress habits={habits}/>
         </div>
       </div>
     </div>
