@@ -1,17 +1,9 @@
 export default function Header() {
   return (
-    <header className="bg-sky-500 text-white text-center py-6 shadow-md relative">
-      <h1 className="text-3xl font-bold tracking-wide">
-        Habit Tracker
-      </h1>
-      <p className="text-lg mt-1 opacity-90">
-        Make your day better ✨
-      </p>
-
-      {/* Footer fixed at the bottom */}
-      <footer className="absolute bottom-2 left-0 right-0 text-pink-300 text-sm font-semibold">
-        You can!
-      </footer>
+    <header className="bg-sky-500 text-white py-6 text-center shadow-md">
+      <h1 className="text-2xl font-bold">Habit Tracker</h1>
+      <p className="text-sm opacity-90">Make your day better ✨</p>
+      <p className="text-pink-200 mt-1">You can!</p>
     </header>
   );
 }
