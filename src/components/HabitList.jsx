@@ -1,28 +1,31 @@
 import HabitListItem from "./HabitListItem";
 
-export default function HabitList() {
-  const demoHabits = [
-    { id: 1, name: "Drink water", goal: 8, done: 3 },
-    { id: 2, name: "Walk", goal: 2, done: 1 },
-    { id: 3, name: "Read", goal: 1, done: 0 },
-  ];
-
+export default function HabitList({ habits, onToggleDot }) {
   return (
     <div className="max-w-2xl mx-auto mt-8 p-4">
       <h2 className="text-xl font-semibold text-sky-700 mb-4 text-center">
         Your habits today
       </h2>
 
-      <div className="grid gap-3">
-        {demoHabits.map((habit) => (
-          <HabitListItem
-            key={habit.id}
-            name={habit.name}
-            done={habit.done}
-            goal={habit.goal}
-          />
-        ))}
-      </div>
+      {habits.length === 0 ? (
+        <p className="text-gray-400 text-center italic">
+          No habits yet. Add one above!
+        </p>
+      ) : (
+        <div className="grid gap-3">
+          {habits.map((habit, index) => (
+            <HabitListItem
+              key={habit.id}
+              index={index}
+              id={habit.id}
+              name={habit.name}
+              goal={habit.goal}
+              doneArray={habit.doneArray}
+              onToggleDot={onToggleDot}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
