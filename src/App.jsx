@@ -6,65 +6,64 @@ import HabitList from "./components/HabitList";
 import Progress from "./components/Progress";
 import { useState, useEffect } from "react";
 
-
 export default function App() {
-  const [habits, setHabits] = useState([]);
+  const [habits, setHabits] = useState(() => {
+    const saved = localStorage.getItem("habits");
+    return saved ? JSON.parse(saved) : [];
+  });
 
-  // Load saved habits on first mount
+  // 🔹 Save to localStorage every time habits change
   useEffect(() => {
-  try {
-    const saved = JSON.parse(localStorage.getItem("habits"));
-    if (Array.isArray(saved)) {
-      setHabits(saved);
-    }
-  } catch (err) {
-    console.error("Failed to load habits:", err);
-  }
-}, []);
-
-// Save habits to localStorage whenever habits change
-useEffect(() => {
-  if (habits.length > 0) {
     localStorage.setItem("habits", JSON.stringify(habits));
-  }
-}, [habits]);
+  }, [habits]);
 
-  // Add a new habit (coming from HabitForm)
-  const handleAddHabit = (newHabit) => {
-    setHabits((prev) => [
-      ...prev,
-      { ...newHabit, doneArray: Array(newHabit.goal).fill(false) },
-    ]);
+  // 🔹 Add new habit
+  const addHabit = (name, goal) => {
+    const newHabit = {
+      id: Date.now(),
+      name,
+      goal,
+      doneArray: Array(goal).fill(false),
+    };
+    setHabits((prev) => [...prev, newHabit]);
   };
 
-  // Toggle a dot in a habit by index
-  const handleToggleDot = (habitId, index) => {
+  // 🔹 Toggle dot (mark as done/undone)
+  const toggleDot = (habitId, dotIndex) => {
     setHabits((prev) =>
-      prev.map((h) =>
-        h.id === habitId
+      prev.map((habit) =>
+        habit.id === habitId
           ? {
-              ...h,
-              doneArray: h.doneArray.map((dot, i) => (i === index ? !dot : dot)),
+              ...habit,
+              doneArray: habit.doneArray.map((d, i) =>
+                i === dotIndex ? !d : d
+              ),
             }
-          : h
+          : habit
       )
     );
   };
 
-  return (
-    <div className="bg-sky-50 min-h-screen">
-      <Header />
-      <HabitForm onAddHabit={handleAddHabit} />
+  // 🔹 Remove a habit
+  const removeHabit = (habitId) => {
+    setHabits((prev) => prev.filter((habit) => habit.id !== habitId));
+  };
 
-      {/* Two-column on desktop, stacked on mobile */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-4 md:px-10">
-        <div>
-          <HabitList habits={habits} onToggleDot={handleToggleDot} />
+  return (
+    <div className="min-h-screen bg-sky-50">
+      <Header />
+      <main className="container mx-auto p-4">
+        <HabitForm onAddHabit={addHabit} />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 items-start">
+          <HabitList
+            habits={habits}
+            onToggleDot={toggleDot}
+            onRemove={removeHabit}
+          />
+          <Progress habits={habits} />
         </div>
-        <div>
-          <Progress habits={habits}/>
-        </div>
-      </div>
+      </main>
     </div>
   );
-} 
+}

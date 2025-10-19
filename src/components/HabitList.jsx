@@ -1,27 +1,28 @@
 import HabitListItem from "./HabitListItem";
 
-export default function HabitList({ habits, onToggleDot }) {
+export default function HabitList({ habits, onToggleDot, onRemove }) {
   return (
-    <div className="max-w-2xl mx-auto mt-8 p-4">
-      <h2 className="text-xl font-semibold text-sky-700 mb-4 text-center">
+    <div className="p-4 pt-0">
+      <h2 className="text-sky-700 text-lg font-semibold mb-2 text-center md:text-left">
         Your habits today
       </h2>
 
       {habits.length === 0 ? (
-        <p className="text-gray-400 text-center italic">
-          No habits yet. Add one above!
+        <p className="text-center text-sky-400 text-sm">
+          Add your first habit to get started!
         </p>
       ) : (
-        <div className="grid gap-3">
+        <div>
           {habits.map((habit, index) => (
             <HabitListItem
               key={habit.id}
-              index={index}
               id={habit.id}
+              index={index}
               name={habit.name}
               goal={habit.goal}
               doneArray={habit.doneArray}
               onToggleDot={onToggleDot}
+              onRemove={onRemove}
             />
           ))}
         </div>

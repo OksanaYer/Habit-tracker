@@ -50,7 +50,7 @@ export default function Progress({ habits }) {
  }
 
   return (
-    <div className="max-w-md mx-auto mt-32 mb-8 p-4 bg-white shadow rounded-lg text-center">
+    <div className="max-w-md mx-auto mt-25 mb-8 p-4 bg-white shadow rounded-lg text-center">
       <h2 className="text-xl font-semibold text-sky-700 mb-3">Day Progress</h2>
 
       {habitCount === 0 ? (
